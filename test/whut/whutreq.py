@@ -29,6 +29,11 @@ def req(username, password):
     password1 = hashlib.sha1(bytes(temp.encode("utf-8")))
     password1 = password1.hexdigest()
     print(username1, password1)
+    # 根据webfinger获取code
+    code = requests.post(url="http://sso.jwc.whut.edu.cn/Certification/getCode.do", data={
+        "webfinger": "bea9b70bfc62874bfeda5e0fe4b26923"
+    })
+    print(code.text)
     # 设置params
     data = {
         "MsgID": "",
@@ -36,11 +41,13 @@ def req(username, password):
         "UserName": "",
         "Password": "",
         "rnd": 64183,
+        # "rnd": 60058,
         "return_EncData": "",
-        "code": 9219201675,
+        # "code": 9219201675,
+        "code": code,
         "userName1": username1,
         "password1": password1,
-        "webfinger": "8e9444ad687caac8ab5be6731715c549",
+        "webfinger": "bea9b70bfc62874bfeda5e0fe4b26923",
         "type": "xs",
         "userName": username,
         "password": password,
@@ -49,13 +56,16 @@ def req(username, password):
     url = "http://sso.jwc.whut.edu.cn/Certification/login.do"
     # 伪装为浏览器
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
     }
 
-    # 发起请求
-    html = requests.post(url=url, headers=headers, params=data)
-    html = html.text
+    # print(session.headers, session.cookies)
 
+    # print(html)
+    # 发起请求
+    session = requests.Session()
+    session.get(headers=headers, url=url)
+    html = session.post(url=url, headers=headers, params=data).text
     # 解析数据
     bs = BeautifulSoup(html, "html.parser")
     class_table = bs.select(".table-class-even")[0]
@@ -96,10 +106,10 @@ def req(username, password):
                         class_sometime = re.findall(re.compile(r"\d+"), str(class_time))
                         for i in range(len(class_sometime)):
                             class_sometime[i] = int(class_sometime[i])
-                        print(class_sometime)
+                        # print(class_sometime)
                         class_start = class_sometime[0]
                         class_end = class_sometime[1]
-                        class_len = class_sometime[3]-class_sometime[2]+1
+                        class_len = class_sometime[3] - class_sometime[2] + 1
                         data.append({
                             "class_name": chinese_word,
                             "class_where": class_where,
@@ -108,7 +118,7 @@ def req(username, password):
                             "class_start": class_start,
                             "class_end": class_end,
                             "count": count,
-                            "len":class_len
+                            "len": class_len
                         })
                         count += 1
                     # 如果是蓝色的
@@ -131,7 +141,7 @@ def req(username, password):
                             class_sometime[i] = int(class_sometime[i])
                         class_start = class_sometime[0]
                         class_end = class_sometime[1]
-                        class_len = class_sometime[3] - class_sometime[2]+1
+                        class_len = class_sometime[3] - class_sometime[2] + 1
                         data.append({
                             "class_name": chinese_word,
                             "class_where": class_where,
@@ -140,13 +150,14 @@ def req(username, password):
                             "class_start": class_start,
                             "class_end": class_end,
                             "count": count,
-                            "len":class_len
+                            "len": class_len
                         })
                         count += 1
             j += 1
     for item in data:
         print(item)
     return data
+
 
 # req("0121810880322", "ykh20001229")
 req("0121810870217", "AX.xgp000908")
