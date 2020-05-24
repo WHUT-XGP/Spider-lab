@@ -24,7 +24,7 @@ def main():
     # 当前活跃线程数目
     # added_thread.start()
     try:
-        req = requests.get("https://khany.top/")
+        req = requests.get("https://xgpax.top/")
         # print(threading.current_thread(), " done")
     except Exception as e:
         pass
@@ -42,6 +42,7 @@ if __name__ == '__main__':
             for i in range(5000):
                 t = threading.Thread(target=main)
                 t.start()
+                t = None
             t.join()
         except Exception as e:
             pass
