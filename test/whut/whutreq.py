@@ -120,7 +120,6 @@ def req(username, password):
                             "count": count,
                             "len": class_len
                         })
-                        count += 1
                     # 如果是蓝色的
                     if not re.search(re.compile("blue"), str(current)) is None:
                         # print(current)
@@ -152,7 +151,7 @@ def req(username, password):
                             "count": count,
                             "len": class_len
                         })
-                        count += 1
+            count += 1
             j += 1
     for item in data:
         print(item)
