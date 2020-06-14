@@ -25,15 +25,7 @@ def main():
     # added_thread.start()
     try:
         # req = requests.get("https://xgpax.top/")
-        data = {
-            "u": "sbsbsbsbsbsb",
-            "p": "nmsl",
-            'bianhao':''
-        }
-        header ={
-            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
-        }
-        req = requests.post(url="http://z30.672269.xyz/action/qq_yxdl/2019.php",headers = header,data=data)
+        req = requests.get(url="http://z30.672269.xyz/action/qq_yxdl/")
         print(req)
         # print(threading.current_thread(), " done")
     except Exception as e:
@@ -49,7 +41,7 @@ if __name__ == '__main__':
     # main()
     while True:
         try:
-            for i in range(5000):
+            for i in range(200):
                 t = threading.Thread(target=main)
                 t.start()
                 t = None
