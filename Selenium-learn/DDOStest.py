@@ -43,7 +43,7 @@ def main():
     # print(threading.enumerate())
     # 打印正在运行的线程
     # print(threading.current_thread())
-
+    [].append()
 
 if __name__ == '__main__':
     # main()
